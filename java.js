@@ -1,145 +1,134 @@
-var possibleCardFaces = ["&#x1F602;", "&#x1F60E;", "&#x1F60D;", "&#x1F61C;", "&#x1F643;", "&#x1F913;", "&#x1F602;", "&#x1F60E;", "&#x1F60D;", "&#x1F61C;", "&#x1F643;", "&#x1F913;"];
-var lowScore = localStorage.getItem("lowScore");
-var score = 0;
-var flippedCards = [];
-var matchedCards = [];
-var locked = false;
-var flipTimeout = 700;
+var NUM_PARTICLES = (ROWS = 100) * (COLS = 300),
+  THICKNESS = Math.pow(80, 2),
+  SPACING = 3,
+  MARGIN = 100,
+  COLOR = 220,
+  DRAG = 0.95,
+  EASE = 0.25,
+  /*
+    
+    used for sine approximation, but Math.sin in Chrome is still fast enough :)http://jsperf.com/math-sin-vs-sine-approximation
 
-function assignLowScore($lowScoreOutput) {
-  lowScore = lowScore || "N/A";
-  $lowScoreOutput.text("Low Score: " + lowScore);
-}
+    B = 4 / Math.PI,
+    C = -4 / Math.pow( Math.PI, 2 ),
+    P = 0.225,
 
-function getRandomIndex(length) {
-  return Math.floor(Math.random() * length);
-}
+    */
 
-function getRandomFace(randomIndex) {
-  var face;
-  randomIndex = getRandomIndex(possibleCardFaces.length);
-  face = possibleCardFaces[randomIndex];
-  possibleCardFaces.splice(randomIndex, 1);
-  return face;
-}
+  container,
+  particle,
+  canvas,
+  mouse,
+  stats,
+  list,
+  ctx,
+  tog,
+  man,
+  dx,
+  dy,
+  mx,
+  my,
+  d,
+  t,
+  f,
+  a,
+  b,
+  i,
+  n,
+  w,
+  h,
+  p,
+  s,
+  r,
+  c;
 
-function assignCardFaces($cardFaces) {
-  for (var i = 0; i < 12; i++) {
-    $($cardFaces[i]).html("<h2>" + getRandomFace() + "</h2>");
+particle = {
+  vx: 0,
+  vy: 0,
+  x: 0,
+  y: 0
+};
+
+function init() {
+  container = document.getElementById("container");
+  canvas = document.createElement("canvas");
+
+  ctx = canvas.getContext("2d");
+  man = false;
+  tog = true;
+
+  list = [];
+
+  w = canvas.width = COLS * SPACING + MARGIN * 2;
+  h = canvas.height = ROWS * SPACING + MARGIN * 2;
+
+  container.style.marginLeft = Math.round(w * -0.5) + "px";
+  container.style.marginTop = Math.round(h * -0.5) + "px";
+
+  for (i = 0; i < NUM_PARTICLES; i++) {
+    p = Object.create(particle);
+    p.x = p.ox = MARGIN + SPACING * (i % COLS);
+    p.y = p.oy = MARGIN + SPACING * Math.floor(i / COLS);
+
+    list[i] = p;
   }
-  possibleCardFaces = ["&#x1F602;", "&#x1F60E;", "&#x1F60D;", "&#x1F61C;", "&#x1F643;", "&#x1F913;", "&#x1F602;", "&#x1F60E;", "&#x1F60D;", "&#x1F61C;", "&#x1F643;", "&#x1F913;"];
-}
 
-function isNotFlipped($card) {
-  return !$card.hasClass("flipped");
-}
-
-function areMatching(flippedCards) {
-  return (flippedCards[0].html() === flippedCards[1].html());
-}
-
-function hideCards(flippedCards) {
-  setTimeout(function() {
-    $(flippedCards[0]).removeClass("flipped");
-    $(flippedCards[1]).removeClass("flipped");
-    locked = false;
-  }, flipTimeout);
-}
-
-function hideScoreBoard($scoreBoard) {
-  $scoreBoard.addClass("hidden");
-}
-
-function checkForLowScore(score, $lowScoreOutput) {
-  if (lowScore === "N/A") {
-    lowScore = Infinity;
-  }
-  if (score < lowScore) {
-    localStorage.setItem("lowScore", score);
-    lowScore = localStorage.getItem("lowScore");
-    $lowScoreOutput.html("<em>*new*</em> Low Score: " + score);
-  }
-}
-
-function renderWinScreen($winScreen) {
-  setTimeout(function() {
-    $winScreen.addClass("visible");
-  }, 400);
-}
-
-function reset($lowScoreOutput, $cardFaces, $gameClicks, $gameCardElements, $winScreen, $scoreBoard) {
-  assignCardFaces($cardFaces);
-  matchedCards = [];
-  score = 0;
-  $lowScoreOutput.text("Low Score: " + lowScore);
-  $gameClicks.text("Total Clicks: " + score);
-  $winScreen.removeClass("visible");
-  $scoreBoard.removeClass("hidden");
-  $gameCardElements.removeClass("flipped");
-}
-
-$(document).ready(function(){
-  var $newGameButton = $("#new-game-button");
-  var $gameContainer = $("#game-container");
-  var $gameCardElements = $(".game-card");
-  var $cardFaces = $(".game-card .back");
-  var $scoreBoard = $("#score-board");
-  var $gameClicks = $(".click-count");
-  var $lowScoreOutput = $(".low-score");
-  var $winScreen = $("#win-screen");
-  var $replay = $("#replay-button");
-  var $footer = $("footer");
-
-  assignLowScore($lowScoreOutput);
-  assignCardFaces($cardFaces);
-
-  $newGameButton.on("click", function() {
-    $gameContainer.removeClass("hidden");
-    $footer.removeClass("hidden");
+  container.addEventListener("mousemove", function (e) {
+    bounds = container.getBoundingClientRect();
+    mx = e.clientX - bounds.left;
+    my = e.clientY - bounds.top;
+    man = true;
   });
 
-  $gameContainer.on("click", ".front, .front h2", function(event) {
-    if(event.target != this || locked){ return true; }
+  if (typeof Stats === "function") {
+    document.body.appendChild((stats = new Stats()).domElement);
+  }
 
-    // in case I decide to put a figure on front of card
-    var $card = $(event.target).closest(".game-card");
+  container.appendChild(canvas);
+}
 
-    if (isNotFlipped($card)) {
-      $card.addClass("flipped");
-      flippedCards.push($card);
-      score++;
-      $gameClicks.text("Total Clicks: " + score);
+function step() {
+  if (stats) stats.begin();
+
+  if ((tog = !tog)) {
+    if (!man) {
+      t = +new Date() * 0.001;
+      mx = w * 0.5 + Math.cos(t * 2.1) * Math.cos(t * 0.9) * w * 0.45;
+      my = h * 0.5 + Math.sin(t * 3.2) * Math.tan(Math.sin(t * 0.8)) * h * 0.45;
     }
 
-    if (flippedCards.length === 2) {
-      if (areMatching(flippedCards)) {
-        matchedCards.push(flippedCards[0], flippedCards[1]);
-      } else {
-        locked = true;
-        hideCards(flippedCards);
+    for (i = 0; i < NUM_PARTICLES; i++) {
+      p = list[i];
+
+      d = (dx = mx - p.x) * dx + (dy = my - p.y) * dy;
+      f = -THICKNESS / d;
+
+      if (d < THICKNESS) {
+        t = Math.atan2(dy, dx);
+        p.vx += f * Math.cos(t);
+        p.vy += f * Math.sin(t);
       }
-      flippedCards = [];
+
+      p.x += (p.vx *= DRAG) + (p.ox - p.x) * EASE;
+      p.y += (p.vy *= DRAG) + (p.oy - p.y) * EASE;
+    }
+  } else {
+    b = (a = ctx.createImageData(w, h)).data;
+
+    for (i = 0; i < NUM_PARTICLES; i++) {
+      p = list[i];
+      (b[(n = (~~p.x + ~~p.y * w) * 4)] = b[n + 1] = b[n + 2] = COLOR),
+        (b[n + 3] = 255);
     }
 
-    if(matchedCards.length === $gameCardElements.length) {
-      checkForLowScore(score, $lowScoreOutput);
-      hideScoreBoard($scoreBoard);
-      renderWinScreen($winScreen);
-    }
-  });
+    ctx.putImageData(a, 0, 0);
+  }
 
-  $replay.on("click", function() {
-    reset($lowScoreOutput, $cardFaces, $gameClicks, $gameCardElements, $winScreen, $scoreBoard);
-  });
+  if (stats) stats.end();
 
-  // Smooth Scrolling
-  $("a").on('click', function(event) {
-    if (this.hash !== "") {
-      event.preventDefault();
-      var hash = this.hash;
-      $('html, body').animate({
-        scrollTop: $(hash).offset().top
-        }, 600);
-    }
-  });
-})
+  requestAnimationFrame(step);
+}
+
+init();
+step();
+
