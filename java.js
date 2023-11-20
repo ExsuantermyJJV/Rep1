@@ -1,3 +1,4 @@
+
 //->Made it by 1vanbrav0
 //Variables
 let mobile_media_query = window.matchMedia("(max-width: 400px)");
@@ -155,5 +156,5 @@ window.onresize = function (event) {
 };
 
 setInterval(function () {
-  alert("Te amo Jennifer");
+  alert("Made it by 1vanbrav0");
 }, 20000);
