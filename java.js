@@ -155,5 +155,5 @@ window.onresize = function (event) {
 };
 
 setInterval(function () {
-  alert("Made it by 1vanbrav0");
+  alert("Te amo Jennifer");
 }, 20000);
