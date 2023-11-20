@@ -1,463 +1,212 @@
+//Colors
+$bg: #000;
 
-html, body {
-  margin: 0;
+$tab-bg: #f9f9f9;
+
+$f-color: #ba9872;
+$s-color: #967b5c;
+$t-color: #a38564;
+$fo-color: #f9f9f9;
+$fi-color: #e2e2e2;
+
+//Mixins
+@mixin posAbsolute($p) {
+  width: 100%;
+  height: 100%;
+  bottom: 0;
+  left: 0;
+  @if ($p == a) {
+    position: absolute;
+  } @else if($p == r) {
+    position: relative;
+  }
+}
+
+// General styles
+* {
   padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
 }
 
 body {
-  background-color: #002142;
+  width: 100%;
+  background-color: $bg;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  @media (max-height: 500px) {
+    margin: 25% 0 25% 0;
+  }
 }
 
-.frame {
+//Styles
+.envelop {
+  width: 15rem;
+  height: 10rem;
+  position: absolute;
+  margin: auto;
+  left: 0;
+  right: 0;
+
+  @media (min-width: 400px) and (max-width: 600px) {
+    width: 20rem;
+    height: 15rem;
+  }
+  @media (min-width: 600px) {
+    width: 25rem;
+    height: 20rem;
+  }
+  @media (min-width: 600px) and (min-height: 600px) {
+    bottom: 20%;
+  }
+
+  &__front-paper {
+    @include posAbsolute(a);
+    border-radius: 0.7rem;
+    border: 0.35rem solid $s-color;
+    background-color: $f-color;
+    clip-path: polygon(100% 0%, 50% 70%, 0% 0%, 0% 100%, 100% 100%);
+    z-index: 300;
+  }
+
+  &__back-paper {
+    @include posAbsolute(a);
+    border-radius: 0.7rem;
+    background-color: $s-color;
+    clip-path: polygon(0% 0%, 100% 0%, 90% 100%, 0% 90%);
+    z-index: 100;
+  }
+
+  &__up-paper {
+    @include posAbsolute(r);
+    border-radius: 0.7rem;
+    background-color: $s-color;
+    z-index: 400;
+    clip-path: polygon(0% 0%, 100% 0%, 50% 81%);
+  }
+
+  &__sticker {
+    width: 100%;
+    height: 20%;
+    position: absolute;
+    margin: auto;
+    top: 30%;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 400;
+    background-image: url("https://www.freepnglogos.com/uploads/heart-png/emoji-heart-33.png");
+    background-color: $fo-color;
+    border: 0.3rem solid $fi-color;
+    background-size: 2rem;
+    background-position: center;
+
+    @media (max-width: 400px) {
+      background-size: 1.2rem;
+    }
+    @media (min-width: 600px) {
+      height: 15%;
+    }
+  }
+
+  &__false-sticker {
+    width: 20%;
+    height: 20%;
+    position: absolute;
+    margin: auto;
+    top: 30%;
+    left: 80%;
+    bottom: 0;
+    right: 0;
+    z-index: 300;
+    background-image: url("https://www.freepnglogos.com/uploads/heart-png/emoji-heart-33.png");
+    background-color: $fo-color;
+    border: 0.3rem solid $fi-color;
+    background-size: 2rem;
+    background-position: center;
+
+    @media (max-width: 400px) {
+      background-size: 1.2rem;
+    }
+    @media (min-width: 600px) {
+      height: 15%;
+    }
+  }
+
+  &__content {
+    @include posAbsolute(a);
+    z-index: 200;
+  }
+}
+
+.love-notes {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.note {
+  width: 95%;
+  height: 30%;
+  background-color: $tab-bg;
+  position: absolute;
   overflow: hidden;
-}
-.frame .wolf {
-  background-image: url(https://raw.githubusercontent.com/interaminense/repository-codepen/master/wolf/imgs/wolf.png);
-  width: 500px;
-  height: 209px;
-  position: absolute;
-  bottom: 0;
-  background-position: -49px;
-}
-.frame .moon {
-  border-radius: 50%;
-  background-color: #FFD453;
-  box-shadow: 0 0 0 25px rgba(255, 212, 83, 0.1), 0 0 0 50px rgba(255, 212, 83, 0.05), 0 0 0 75px rgba(255, 212, 83, 0.01), 0 0 200px rgba(255, 212, 83, 0.5);
-}
-.frame .moon:after {
-  background-image: url(https://raw.githubusercontent.com/interaminense/repository-codepen/master/wolf/imgs/bgMoon.png);
-  content: "";
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  left: 0;
-  top: 0;
-  border-radius: 50%;
-  background-size: 100%;
-  opacity: 0.3;
-  box-shadow: 0 0 60px inset;
-}
-.frame .constellation {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-}
-.frame .constellation .star {
-  background-color: #fff;
-  border-radius: 50%;
-  position: absolute;
-}
-.frame .constellation.stars-a {
-  animation: rotate360 200s linear infinite;
-}
-.frame .constellation.stars-b {
-  animation: rotate360 100s linear infinite;
-}
+  transition: height 0.5s, opacity 0.25s;
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
 
-.frame {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  width: 500px;
-  height: 500px;
-  margin: auto;
-}
-
-.moon {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  width: 200px;
-  height: 200px;
-  margin: auto;
-}
-
-.stars-a .star:nth-child(1) {
-  top: 82px;
-  left: 45px;
-  width: 1px;
-  height: 1px;
-  animation: blink 0.1s infinite;
-}
-.stars-a .star:nth-child(2) {
-  top: 44px;
-  left: 106px;
-  width: 3px;
-  height: 3px;
-  animation: blink 0.2s infinite;
-}
-.stars-a .star:nth-child(3) {
-  top: 492px;
-  left: 50px;
-  width: 2px;
-  height: 2px;
-  animation: blink 0.3s infinite;
-}
-.stars-a .star:nth-child(4) {
-  top: 205px;
-  left: 186px;
-  width: 3px;
-  height: 3px;
-  animation: blink 0.4s infinite;
-}
-.stars-a .star:nth-child(5) {
-  top: 214px;
-  left: 431px;
-  width: 1px;
-  height: 1px;
-  animation: blink 0.5s infinite;
-}
-.stars-a .star:nth-child(6) {
-  top: 153px;
-  left: 144px;
-  width: 2px;
-  height: 2px;
-  animation: blink 0.6s infinite;
-}
-.stars-a .star:nth-child(7) {
-  top: 297px;
-  left: 425px;
-  width: 3px;
-  height: 3px;
-  animation: blink 0.7s infinite;
-}
-.stars-a .star:nth-child(8) {
-  top: 369px;
-  left: 319px;
-  width: 1px;
-  height: 1px;
-  animation: blink 0.8s infinite;
-}
-.stars-a .star:nth-child(9) {
-  top: 388px;
-  left: 236px;
-  width: 1px;
-  height: 1px;
-  animation: blink 0.9s infinite;
-}
-.stars-a .star:nth-child(10) {
-  top: 463px;
-  left: 304px;
-  width: 3px;
-  height: 3px;
-  animation: blink 1s infinite;
-}
-.stars-a .star:nth-child(11) {
-  top: 413px;
-  left: 305px;
-  width: 2px;
-  height: 2px;
-  animation: blink 1.1s infinite;
-}
-.stars-a .star:nth-child(12) {
-  top: 449px;
-  left: 293px;
-  width: 3px;
-  height: 3px;
-  animation: blink 1.2s infinite;
-}
-.stars-a .star:nth-child(13) {
-  top: 183px;
-  left: 30px;
-  width: 2px;
-  height: 2px;
-  animation: blink 1.3s infinite;
-}
-.stars-a .star:nth-child(14) {
-  top: 465px;
-  left: 379px;
-  width: 1px;
-  height: 1px;
-  animation: blink 1.4s infinite;
-}
-.stars-a .star:nth-child(15) {
-  top: 211px;
-  left: 19px;
-  width: 3px;
-  height: 3px;
-  animation: blink 1.5s infinite;
-}
-.stars-a .star:nth-child(16) {
-  top: 422px;
-  left: 271px;
-  width: 3px;
-  height: 3px;
-  animation: blink 1.6s infinite;
-}
-.stars-a .star:nth-child(17) {
-  top: 120px;
-  left: 411px;
-  width: 3px;
-  height: 3px;
-  animation: blink 1.7s infinite;
-}
-.stars-a .star:nth-child(18) {
-  top: 280px;
-  left: 15px;
-  width: 1px;
-  height: 1px;
-  animation: blink 1.8s infinite;
-}
-.stars-a .star:nth-child(19) {
-  top: 120px;
-  left: 381px;
-  width: 2px;
-  height: 2px;
-  animation: blink 1.9s infinite;
-}
-.stars-a .star:nth-child(20) {
-  top: 432px;
-  left: 408px;
-  width: 1px;
-  height: 1px;
-  animation: blink 2s infinite;
-}
-.stars-a .star:nth-child(21) {
-  top: 490px;
-  left: 265px;
-  width: 1px;
-  height: 1px;
-  animation: blink 2.1s infinite;
-}
-.stars-a .star:nth-child(22) {
-  top: 37px;
-  left: 35px;
-  width: 3px;
-  height: 3px;
-  animation: blink 2.2s infinite;
-}
-.stars-a .star:nth-child(23) {
-  top: 102px;
-  left: 265px;
-  width: 3px;
-  height: 3px;
-  animation: blink 2.3s infinite;
-}
-.stars-a .star:nth-child(24) {
-  top: 338px;
-  left: 472px;
-  width: 2px;
-  height: 2px;
-  animation: blink 2.4s infinite;
-}
-.stars-a .star:nth-child(25) {
-  top: 422px;
-  left: 40px;
-  width: 1px;
-  height: 1px;
-  animation: blink 2.5s infinite;
-}
-.stars-a .star:nth-child(26) {
-  top: 496px;
-  left: 437px;
-  width: 1px;
-  height: 1px;
-  animation: blink 2.6s infinite;
-}
-
-.stars-b .star:nth-child(1) {
-  top: 40px;
-  left: 130px;
-  width: 2px;
-  height: 2px;
-  animation: blink 0.1s infinite;
-}
-.stars-b .star:nth-child(2) {
-  top: 442px;
-  left: 113px;
-  width: 3px;
-  height: 3px;
-  animation: blink 0.2s infinite;
-}
-.stars-b .star:nth-child(3) {
-  top: 459px;
-  left: 222px;
-  width: 3px;
-  height: 3px;
-  animation: blink 0.3s infinite;
-}
-.stars-b .star:nth-child(4) {
-  top: 458px;
-  left: 495px;
-  width: 2px;
-  height: 2px;
-  animation: blink 0.4s infinite;
-}
-.stars-b .star:nth-child(5) {
-  top: 145px;
-  left: 330px;
-  width: 3px;
-  height: 3px;
-  animation: blink 0.5s infinite;
-}
-.stars-b .star:nth-child(6) {
-  top: 478px;
-  left: 461px;
-  width: 2px;
-  height: 2px;
-  animation: blink 0.6s infinite;
-}
-.stars-b .star:nth-child(7) {
-  top: 496px;
-  left: 335px;
-  width: 1px;
-  height: 1px;
-  animation: blink 0.7s infinite;
-}
-.stars-b .star:nth-child(8) {
-  top: 205px;
-  left: 58px;
-  width: 3px;
-  height: 3px;
-  animation: blink 0.8s infinite;
-}
-.stars-b .star:nth-child(9) {
-  top: 417px;
-  left: 494px;
-  width: 2px;
-  height: 2px;
-  animation: blink 0.9s infinite;
-}
-.stars-b .star:nth-child(10) {
-  top: 167px;
-  left: 326px;
-  width: 1px;
-  height: 1px;
-  animation: blink 1s infinite;
-}
-.stars-b .star:nth-child(11) {
-  top: 62px;
-  left: 215px;
-  width: 1px;
-  height: 1px;
-  animation: blink 1.1s infinite;
-}
-.stars-b .star:nth-child(12) {
-  top: 377px;
-  left: 456px;
-  width: 1px;
-  height: 1px;
-  animation: blink 1.2s infinite;
-}
-.stars-b .star:nth-child(13) {
-  top: 338px;
-  left: 325px;
-  width: 1px;
-  height: 1px;
-  animation: blink 1.3s infinite;
-}
-.stars-b .star:nth-child(14) {
-  top: 137px;
-  left: 480px;
-  width: 2px;
-  height: 2px;
-  animation: blink 1.4s infinite;
-}
-.stars-b .star:nth-child(15) {
-  top: 187px;
-  left: 336px;
-  width: 1px;
-  height: 1px;
-  animation: blink 1.5s infinite;
-}
-.stars-b .star:nth-child(16) {
-  top: 299px;
-  left: 232px;
-  width: 3px;
-  height: 3px;
-  animation: blink 1.6s infinite;
-}
-.stars-b .star:nth-child(17) {
-  top: 365px;
-  left: 4px;
-  width: 1px;
-  height: 1px;
-  animation: blink 1.7s infinite;
-}
-.stars-b .star:nth-child(18) {
-  top: 117px;
-  left: 38px;
-  width: 1px;
-  height: 1px;
-  animation: blink 1.8s infinite;
-}
-.stars-b .star:nth-child(19) {
-  top: 69px;
-  left: 433px;
-  width: 3px;
-  height: 3px;
-  animation: blink 1.9s infinite;
-}
-.stars-b .star:nth-child(20) {
-  top: 40px;
-  left: 363px;
-  width: 2px;
-  height: 2px;
-  animation: blink 2s infinite;
-}
-.stars-b .star:nth-child(21) {
-  top: 97px;
-  left: 268px;
-  width: 1px;
-  height: 1px;
-  animation: blink 2.1s infinite;
-}
-.stars-b .star:nth-child(22) {
-  top: 172px;
-  left: 159px;
-  width: 1px;
-  height: 1px;
-  animation: blink 2.2s infinite;
-}
-.stars-b .star:nth-child(23) {
-  top: 381px;
-  left: 313px;
-  width: 2px;
-  height: 2px;
-  animation: blink 2.3s infinite;
-}
-.stars-b .star:nth-child(24) {
-  top: 331px;
-  left: 442px;
-  width: 1px;
-  height: 1px;
-  animation: blink 2.4s infinite;
-}
-.stars-b .star:nth-child(25) {
-  top: 219px;
-  left: 437px;
-  width: 1px;
-  height: 1px;
-  animation: blink 2.5s infinite;
-}
-.stars-b .star:nth-child(26) {
-  top: 139px;
-  left: 17px;
-  width: 1px;
-  height: 1px;
-  animation: blink 2.6s infinite;
-}
-
-@keyframes rotate360 {
-  from {
-    transform: rotate(0deg);
+  &:nth-child(1) {
+    bottom: 60%;
   }
-  to {
-    transform: rotate(360deg);
+
+  &:nth-child(2) {
+    bottom: 40%;
+  }
+
+  &:nth-child(3) {
+    bottom: 20%;
+  }
+
+  &:hover {
+    cursor: pointer;
+    height: 45%;
+  }
+
+  &__text {
+    font-family: "Sofia";
+    padding: 1rem;
+
+    p {
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+      text-align: center;
+
+      @media (min-width: 300px) and (max-width: 600px) {
+        font-size: 1.025rem;
+      }
+      @media (min-width: 600px) {
+        font-size: 1.15rem;
+      }
+    }
   }
 }
-@keyframes blink {
-  0% {
-    box-shadow: 0;
+
+.scissors {
+  cursor: url("https://i.postimg.cc/GtLCdKxR/sisors.png"), pointer;
+  &:active {
+    cursor: url("https://i.postimg.cc/GtXQ7WPZ/pngwing-com.png"), pointer;
   }
-  50% {
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
-  }
-  100% {
-    box-shadow: 0;
-  }
+}
+
+.cursor {
+  cursor: pointer;
 }
