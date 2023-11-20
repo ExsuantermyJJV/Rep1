@@ -1,49 +1,68 @@
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ibuprofeno</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js" defer></script>
-    <link rel="shortcut icon" href="images/ev.jpg" type="image/x-icon">  
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-</head>
-<body>
-
-<body class="scissors">
-  <div class="envelop">
-    <div class="envelop__front-paper"></div>
-    <div class="envelop__back-paper"></div>
-    <div class="envelop__up-paper js-up-paper"></div>
-    <div class="envelop__sticker js-sticker"></div>
-    <div class="envelop__false-sticker"></div>
-    <div class="envelop__content js-envelop-content">
-      <div class="love-notes">
-        <div class="note js-note">
-          <div class="note__text">
-            <p>
-              Hola amor, te quiero dar las gracias por todo, por las alegrías, por las risas, por los lindos momentos pero, también por los malos, porque aunque haya malos momentos...
-            </p>
-          </div>
-        </div>
-        <div class="note js-note">
-          <div class="note__text">
-            <p>quiero pasarlos contigo, luchar y superarlos juntos. La verdad eres muy importante para mi, amo lo que tenemos juntos y sé que podemos mejorar y mantenerlo si los dos queremos y créeme que yo quiero.</p>
-          </div>
-        </div>
-        <div class="note js-note">
-          <div class="note__text">
-            <p>En verdad te amo y se que podemos lograrlo, y lo intentare hasta que ya no este en mis manos, porque no estoy contigo por necesidad ni por superficialidad, estoy contigo por elección.</p>
-            <p>Te amo mensa &hearts;.</p>
-          </div>
-        </div>
-      </div>
+<header>
+  <h1>MEMORY CARD GAME</h1>
+  <a href="#game-container" id="new-game-button">New Game?</a>
+</header>
+<section id="game-container" class="hidden">
+  <section id="game">
+    <div id="game-card-1" class="game-card">
+      <figure class="front"></figure>
+      <figure class="back"></figure>
     </div>
+    <div id="game-card-2" class="game-card">
+      <figure class="front"></figure>
+      <figure class="back"></figure>
+    </div>
+    <div id="game-card-3" class="game-card">
+      <figure class="front"></figure>
+      <figure class="back"></figure>
+    </div>
+    <div id="game-card-4" class="game-card">
+      <figure class="front"></figure>
+      <figure class="back"></figure>
+    </div>
+    <div id="game-card-5" class="game-card">
+      <figure class="front"></figure>
+      <figure class="back"></figure>
+    </div>
+    <div id="game-card-6" class="game-card">
+      <figure class="front"></figure>
+      <figure class="back"></figure>
+    </div>
+    <div id="game-card-7" class="game-card">
+      <figure class="front"></figure>
+      <figure class="back"></figure>
+    </div>
+    <div id="game-card-8" class="game-card">
+      <figure class="front"></figure>
+      <figure class="back"></figure>
+    </div>
+    <div id="game-card-9" class="game-card">
+      <figure class="front"></figure>
+      <figure class="back"></figure>
+    </div>
+    <div id="game-card-10" class="game-card">
+      <figure class="front"></figure>
+      <figure class="back"></figure>
+    </div>
+    <div id="game-card-11" class="game-card">
+      <figure class="front"></figure>
+      <figure class="back"></figure>
+    </div>
+    <div id="game-card-12" class="game-card">
+      <figure class="front"></figure>
+      <figure class="back"></figure>
+    </div>
+  </section>
+  <section id="score-board" class="">
+    <div class="score low-score">Low Score: N/A</div>
+    <div class="score click-count">Total Clicks: 0</div>
+  </section>
+  <div id="win-screen" class="">
+    <h3>🎯 Nailed It! 🎯</h3>
+    <div class="score click-count">Total Clicks: 0</div>
+    <div class="score low-score">Low Score:</div>
+    <a id="replay-button">Play Again?</a>
   </div>
-</body>
-
-</html>
+</section>
+<footer class="hidden"> Coded and designed con mucho amor <i class="far fa-hand-spock"></i> by <a href="https://goyanespaula.github.io/" target="a_blank">Paula Goyanes</a> 2018 <i class="far fa-copyright"></i>
+</footer>
